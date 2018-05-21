@@ -1,0 +1,7 @@
+{
+    "name": "Vidly - Movie Rental App (Development)",
+    "log":{
+        "enabled": true,
+        "file":""
+    }
+}
