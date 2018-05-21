@@ -7,7 +7,7 @@ const customers = require('./routes/customers');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
 const users = require('./routes/users');
-const auth = require('./routes/auth');
+const login = require('./routes/login');
 
 //Read the config files to get jwt-private-key
 const config = require('config');
@@ -47,7 +47,7 @@ app.use('/api/rentals', rentals);
 //Use user api's 
 app.use('/api/users', users);
 //Use auth api's 
-app.use('/api/auth', auth);
+app.use('/api/login', login);
 
 
 const port = process.env.PORT || 3000;

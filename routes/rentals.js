@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 
+const auth = require('../middleware/auth');
 const Fawn = require('fawn');
 
 const {Customer, validateCustomer} = require('../models/customer');
@@ -28,7 +29,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //Create a rental
-router.post('', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     
     const {error} = validateRental(req.body);//same as result.error
     if(error){
@@ -81,7 +82,7 @@ router.post('', async (req, res) => {
 });
 
 //Update a rental
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     
     const {error} = validateRental(req.body);//same as result.error
     if(error){
@@ -119,7 +120,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //Delete a rental
-router.delete('/:id', async (req,res) => {
+router.delete('/:id', auth, async (req,res) => {
 
     const rental = await Rental.findByIdAndRemove(req.params.id);
     if(!rental){
