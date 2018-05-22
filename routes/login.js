@@ -35,6 +35,7 @@ router.post('/', async (req, res) => {
 
     //return a jwt token as the response
     const token = user.generateAuthToken();
+    console.log(token);
     res.status(200).send(token);
 
 });

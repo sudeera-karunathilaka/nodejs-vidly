@@ -10,8 +10,7 @@ const users = require('./routes/users');
 const login = require('./routes/login');
 
 //Read the config files to get jwt-private-key
-const config = require('config');
-if(!config.get('jwtPrivateKey')){
+if(!process.env.jwtPrivateKey){
     console.error('Fatal Error: jwtPrivateKey is not defined.');
     process.exit(1);//0 means success. anything other than 0 means error
 }

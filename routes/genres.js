@@ -37,7 +37,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 //Update a genre
-router.put('/:id', aauth, async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     
     const {error} = validate(req.body);//same as result.error
     if(error){
