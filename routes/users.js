@@ -1,6 +1,7 @@
 //Express for api's
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
 
 const mongoose = require('mongoose');
 const {User, validate} = require('../models/user');
@@ -30,6 +31,12 @@ const _ = require('lodash');
     //...
     })
 */
+
+router.get('/me', auth, async(req, res) => {
+    //This means fetch user by id and populate the user without password
+    const user = User.findById(req.user._id).select('-password');
+    res.status(200).send(user);
+});
 
 //Register a user
 router.post('/', async (req, res) => {
