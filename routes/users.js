@@ -44,6 +44,7 @@ router.post('/', async (req, res) => {
     
     const {error} = validate(req.body);//same as result.error
     if(error){
+        console.log(error);
         return res.status(400).send(error.details[0].message);
     }
 

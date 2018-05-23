@@ -23,7 +23,10 @@ const userScheme = new mongoose.Schema({
         minlength: 2,
         maxlength: 1024//Password is saved after hashing. Therefore the length of the saved password will be longer than the actual password.
     },
-    isAdmin: Boolean
+    isAdmin: {
+        type: Boolean,
+        default: false
+    }
 });
 
 /*
@@ -39,11 +42,13 @@ userScheme.methods.generateAuthToken = function(){
 const User = mongoose.model('User', userScheme);
 
 function validateUser(user){
+    console.log(user);
     //Input validation
     const schema = { //this schema is used to validate the request body
         name: Joi.string().min(2).max(50).required(),
         email: Joi.string().email(),
-        password: Joi.string().min(2).max(255).required()
+        password: Joi.string().min(2).max(255).required(),
+        isAdmin: Joi.boolean()
     };
     return Joi.validate(user, schema);
 }
