@@ -35,7 +35,8 @@ const userScheme = new mongoose.Schema({
  */
 userScheme.methods.generateAuthToken = function(){
     //This cannot be replaced by an arrow function as arrow functions does not support "this" keyword
-    const token =  jwt.sign({_id:this._id, isAdmin: this.isAdmin}, process.env.jwtPrivateKey);
+    //const token =  jwt.sign({_id:this._id, isAdmin: this.isAdmin}, process.env.jwtPrivateKey);
+    const token =  jwt.sign({_id:this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
     return token;
 }
 
