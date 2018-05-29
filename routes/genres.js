@@ -16,6 +16,9 @@ router.get('', async (req, res) => {
 
 //Get genre by id
 router.get('/:id', async (req, res) => {
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
+        return res.status(404).send('Invalid genre id');
+    }
     const genre = await Genre.findById(req.params.id);
     if(!genre){
         return res.status(404).send('The genre with the given ID does not exist');

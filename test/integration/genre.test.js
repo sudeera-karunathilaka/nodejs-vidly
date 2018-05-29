@@ -7,7 +7,7 @@ describe('/api/genre', () => {
     beforeEach(() => {server = require('../../index'); });
     afterEach( async() => {
         server.close();
-        await Genre.remove({});
+        await Genre.remove({});//Remove all dummy data at the end on each test suit execution.
     });
     
     describe('GET /', () => {
@@ -23,5 +23,28 @@ describe('/api/genre', () => {
             expect(response.body.some(g => g.name === 'Genre 1')).toBeTruthy()
             expect(response.body.some(g => g.name === 'Genre 2')).toBeTruthy()
         });
-    })
+    });
+
+    describe('GET /:id', () => {
+        it('should return a genre if valid id is passed', async () =>{
+            const genre = new Genre({name: 'Genre 1'});
+            const result = await genre.save();
+
+            const response = await request(server).get('/api/genres/' + genre._id);
+            console.log(result);
+
+            expect(response.status).toBe(200);
+            
+            expect(response.body).toHaveProperty('name', genre.name);
+            //expect(response.body.some(g => g.name === 'Genre 2')).toBeTruthy()
+        });
+
+        it('should return 404 if invalid id is passed', async () =>{
+            const response = await request(server).get('/api/genres/1');
+            expect(response.status).toBe(404);
+            
+            //expect(response.body).toHaveProperty('name', genre.name);
+            //expect(response.body.some(g => g.name === 'Genre 2')).toBeTruthy()
+        });
+    });
 });
