@@ -4,6 +4,7 @@ const router = express.Router();
 
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const validateObjectId = require('../middleware/validateObjectId');
 
 const mongoose = require('mongoose');
 const {Genre, validate} = require('../models/genre');
@@ -15,10 +16,7 @@ router.get('', async (req, res) => {
 });
 
 //Get genre by id
-router.get('/:id', async (req, res) => {
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-        return res.status(404).send('Invalid genre id');
-    }
+router.get('/:id', validateObjectId, async (req, res) => {
     const genre = await Genre.findById(req.params.id);
     if(!genre){
         return res.status(404).send('The genre with the given ID does not exist');
