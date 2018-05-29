@@ -1,5 +1,7 @@
 const request = require('supertest');
 const {Genre} = require('../../models/genre');
+const {User} = require('../../models/user');
+
 let server;
 describe('/api/genre', () => {
     // This will make sure the server is closed after each test suit execution and reload before the next test suit execution.
@@ -42,9 +44,36 @@ describe('/api/genre', () => {
         it('should return 404 if invalid id is passed', async () =>{
             const response = await request(server).get('/api/genres/1');
             expect(response.status).toBe(404);
-            
-            //expect(response.body).toHaveProperty('name', genre.name);
-            //expect(response.body.some(g => g.name === 'Genre 2')).toBeTruthy()
+        });
+    });
+
+    describe('POST /', () =>{
+        it('should return 401 if client is not logged in', async () => {
+            const genre = {name: 'Genre 1'};
+            const response = await request(server).post('/api/genres').send(genre);
+            expect(response.status).toBe(401);
+        });
+
+        it('should return 400 if genre name is less than 5 characters', async () => {
+            const token = new User().generateAuthToken();
+            console.log('Token.............. ' + token);
+            const genre = {name: '123'};
+            const response = await request(server)
+                            .post('/api/genres')
+                            .set('x-auth-token', token)
+                            .send(genre);
+            expect(response.status).toBe(400);
+        });
+
+        it('should return 400 if genre name is more than 50 characters', async () => {
+            const token = new User().generateAuthToken();
+            console.log('Token.............. ' + token);
+            const genre = {name: new Array(52).join('a')}; //Create a string of 51 characters
+            const response = await request(server)
+                            .post('/api/genres')
+                            .set('x-auth-token', token)
+                            .send(genre);
+            expect(response.status).toBe(400);
         });
     });
 });
