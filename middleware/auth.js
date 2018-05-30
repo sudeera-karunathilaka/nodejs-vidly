@@ -13,8 +13,6 @@ function authenticate(req, res, next){
             res.status(400).send('Invalid token');    
         }
         req.user = decodedToken;
-        console.log('Token', token);
-        console.log('Decoded token', decodedToken);
         next();
     }
     catch(ex){
