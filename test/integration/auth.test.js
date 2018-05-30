@@ -21,14 +21,17 @@ describe('authorization middleware', () => {
 
     it('should return 401 if no token is provider', async() =>{
         token = '';
-
         const response = exec();
         expect(response.status).toBe(401);
     });
 
     it('should return 400 if no token is invalid', async() =>{
         token = null;
+        const response = exec();
+        expect(response.status).toBe(400);
+    });
 
+    it('should return 200 if token is valid', async() =>{
         const response = exec();
         expect(response.status).toBe(400);
     });
