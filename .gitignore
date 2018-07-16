@@ -62,3 +62,6 @@ typings/
 
 #log files
 .log
+
+#VS Code files
+.vscode
