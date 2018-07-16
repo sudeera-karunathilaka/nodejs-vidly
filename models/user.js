@@ -22,6 +22,10 @@ const userScheme = new mongoose.Schema({
         required: true,
         minlength: 2,
         maxlength: 1024//Password is saved after hashing. Therefore the length of the saved password will be longer than the actual password.
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -31,18 +35,24 @@ const userScheme = new mongoose.Schema({
  */
 userScheme.methods.generateAuthToken = function(){
     //This cannot be replaced by an arrow function as arrow functions does not support "this" keyword
-    const token =  jwt.sign({_id:this._id}, config.get('jwtPrivateKey'));
+    let secretKey = process.env.jwtPrivateKey;
+    if(!secretKey){ //TODO: This is only for unit testing
+        secretKey = config.get('jwtPrivateKey');
+    }
+    const token =  jwt.sign({_id:this._id, isAdmin: this.isAdmin}, secretKey);
     return token;
 }
 
 const User = mongoose.model('User', userScheme);
 
 function validateUser(user){
+    console.log(user);
     //Input validation
     const schema = { //this schema is used to validate the request body
         name: Joi.string().min(2).max(50).required(),
         email: Joi.string().email(),
-        password: Joi.string().min(2).max(255).required()
+        password: Joi.string().min(2).max(255).required(),
+        isAdmin: Joi.boolean()
     };
     return Joi.validate(user, schema);
 }

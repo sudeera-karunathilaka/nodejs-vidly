@@ -14,8 +14,6 @@ const _ = require('lodash');
 
 //Login a user
 router.post('/', async (req, res) => {
-
-    console.log('............................. authentication ..................................');
     //This env variable needs to  be set in command line <set jwtPrivateKey=myKey>
     //Cannot set the env variable using powershell. instead use cmd in admin mode 
     
@@ -23,6 +21,8 @@ router.post('/', async (req, res) => {
     if(error){
         return res.status(400).send(error.details[0].message);
     }
+
+    console.log('Request body: ' + req.body);
 
     let user = await User.findOne({email: req.body.email});
     if(!user){
@@ -35,6 +35,7 @@ router.post('/', async (req, res) => {
 
     //return a jwt token as the response
     const token = user.generateAuthToken();
+    console.log(token);
     res.status(200).send(token);
 
 });

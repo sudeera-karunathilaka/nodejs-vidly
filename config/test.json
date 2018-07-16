@@ -1,0 +1,5 @@
+{
+    "name": "Vidly - Movie Rental App",
+    "jwtPrivateKey": "1234",
+    "db":"mongodb://localhost/vidly_tests"
+}
